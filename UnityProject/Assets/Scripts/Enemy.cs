@@ -9,6 +9,8 @@ public class Enemy : MonoBehaviour
     public Transform player;       // 玩家變形
     public Animator ani;
 
+    public float timer;            // 計時器
+
     private void Start()
     {
         // 先取得元件
@@ -23,12 +25,18 @@ public class Enemy : MonoBehaviour
         Move();
     }
 
-    private void Attack()
+    public virtual void Attack()
     {
 
     }
 
+    // virtual 虛擬 : 讓子類別可以複寫
     public virtual void Move()
+    {
+
+    }
+
+    public virtual void Wait()
     {
 
     }
