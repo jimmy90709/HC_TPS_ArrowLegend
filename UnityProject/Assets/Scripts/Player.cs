@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     #endregion
 
     private LevelManager levelManager;  // 關卡管理器
+    private HpBarControl hpControl;     // 血條控制器
 
     #region 事件
     private void Start()
@@ -25,6 +26,7 @@ public class Player : MonoBehaviour
         target = GameObject.Find("目標").transform;                       // 寫法 2
         joy = GameObject.Find("虛擬搖桿").GetComponent<Joystick>();
         levelManager = FindObjectOfType<LevelManager>();                  // 透過類型尋找物件
+        hpControl = transform.Find("血條系統").GetComponent<HpBarControl>();           // 變形.尋找("子物件")
     }
 
     // 固定更新：固定一秒 50 次 - 物理行為
@@ -83,15 +85,19 @@ public class Player : MonoBehaviour
         ani.SetTrigger("攻擊觸發");     // 播放攻擊動畫 SetTrigger("參數名稱")
     }
 
-    private void Hit(float damage)
+    public void Hit(float damage)
     {
-        // 血量 扣除 傷害值
-        
+        data.hp -= damage;                            // 血量 扣除 傷害值
+        data.hp = Mathf.Clamp(data.hp, 0, 10000);     // 血量 夾在 0 - 10000
+        hpControl.UpdataHpBar(data.hpMax, data.hp);
+        if (data.hp == 0) Dead();                     // 如果 血量 為 0 呼叫死亡方式
+        StartCoroutine(hpControl.ShowDamage(damage)); // 血量控制氣.顯示傷害值
     }
 
     private void Dead()
     {
         ani.SetBool("死亡動畫", true);  // 播放死亡動畫 SetBool("參數名稱", 布林值)
+        this.enabled = false;           // this 此類別 - enabled 是否啟動
     }
     #endregion
 }

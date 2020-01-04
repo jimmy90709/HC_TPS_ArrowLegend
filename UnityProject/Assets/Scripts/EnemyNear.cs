@@ -9,7 +9,7 @@ public class EnemyNear : Enemy
         agent.SetDestination(player.position);  // 代理器.設定目的地(玩家.座標)
         
 
-        print(agent.remainingDistance);
+        //print(agent.remainingDistance);
 
         if(agent.remainingDistance <= data.stopDistance)  //如果 距離 <=
         {
@@ -61,6 +61,7 @@ public class EnemyNear : Enemy
         {
             print("打到東西!" + hit.collider.gameObject);
             // 取得玩家元件.受傷方法(怪物.攻擊力)
+            hit.collider.GetComponent<Player>().Hit(data.attack);
         }
     }
 
