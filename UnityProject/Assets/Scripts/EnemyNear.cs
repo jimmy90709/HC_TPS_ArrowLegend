@@ -3,49 +3,9 @@ using System.Collections;
 
 public class EnemyNear : Enemy
 {
-    public override void Move()
+    protected override void Attack()
     {
-        
-        agent.SetDestination(player.position);  // 代理器.設定目的地(玩家.座標)
-        
-
-        //print(agent.remainingDistance);
-
-        if(agent.remainingDistance <= data.stopDistance)  //如果 距離 <=
-        {
-            Wait();
-        }
-        else
-        {
-            agent.isStopped = false;                     // 代理器.是否停止 = 否
-            ani.SetBool("跑步開關", true);               // 開起跑步開關
-        }
-    }
-
-    // overrice : 複寫父類別有 virtual 的方法
-    public override void Wait()
-    {
-        // base.Wait(); // 使用父類別方法內容
-
-        agent.isStopped = true;                       // 代理器.是否停止 = 是
-        agent.velocity = Vector3.zero;                // 代理器.加速度 = 零
-        ani.SetBool("跑步開關", false);               // 關閉跑步開關
-
-        if(timer <= data.cd)                          // 如果 計時器 <= 冷卻時間
-        {
-            timer += Time.deltaTime;                  // 時間累加
-            //print("時間" + timer);
-        }
-        else
-        {
-            Attack();                                // 否則 計時器 > 冷卻時間 攻擊
-        }
-    }
-
-    public override void Attack()
-    {
-        timer = 0;                                   // 計時器 歸零
-        ani.SetTrigger("攻擊觸發");                  // 攻擊動畫
+        base.Attack();
         StartCoroutine(DelayAttack());               // 啟動協程
     }
 

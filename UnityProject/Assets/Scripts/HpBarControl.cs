@@ -37,19 +37,20 @@ public class HpBarControl : MonoBehaviour
        
     public IEnumerator ShowDamage(float damage)                // 協程方法 : 顯示傷害值 - 接收傷害
     {
-        Vector3 posOriginal = textDamage.transform.position;   // 取得原始位置
+        //Vector3 posOriginal = textDamage.transform.position;   // 取得原始位置
+        textDamage.GetComponent<RectTransform>().anchoredPosition = new Vector2(101, 67.57f);
         textDamage.text = "-" + damage;                        // 更新傷害值 = 接收傷害
         // 迴圈
         for (int i = 0; i < 10; i++)
         {
             // 傷害值往上移動 (transform.position.y += 值)
-            textDamage.transform.position += new Vector3(0, 0.1f, 0);
-
+            //textDamage.transform.position += new Vector3(0, 0.1f, 0);
+            textDamage.GetComponent<RectTransform>().anchoredPosition += new Vector2(0, 5);
             // 等待
             yield return new WaitForSeconds(0.05f);
         }
-        textDamage.transform.position = posOriginal;           // 位置 = 原始位置
-        textDamage.text = "";                                  // 文字 = ""
+        //textDamage.transform.position = posOriginal;           // 位置 = 原始位置
+        textDamage.text = "";                                       // 文字 = ""
 
     }
 

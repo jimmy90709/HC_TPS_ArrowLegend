@@ -164,8 +164,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 2f71f72a0c0ccc840820af9a2d154cd5, type: 2}
-  agent: {fileID: 0}
-  player: {fileID: 0}
+  timer: 0
+  bullet: {fileID: 5465236585409739684, guid: ebf7cb0879b46d840a491a1bcbcb45a3, type: 3}
 --- !u!195 &6608321128108344820
 NavMeshAgent:
   m_ObjectHideFlags: 0

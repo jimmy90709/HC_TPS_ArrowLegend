@@ -96,8 +96,10 @@ public class Player : MonoBehaviour
 
     private void Dead()
     {
-        ani.SetBool("死亡動畫", true);  // 播放死亡動畫 SetBool("參數名稱", 布林值)
-        this.enabled = false;           // this 此類別 - enabled 是否啟動
+        if (ani.GetBool("死亡動畫")) return;               // 如果死亡動畫為勾選就跳出
+        ani.SetBool("死亡動畫", true);                     // 播放死亡動畫 SetBool("參數名稱", 布林值)
+        this.enabled = false;                              // this 此類別 - enabled 是否啟動
+        StartCoroutine(levelManager.CountDownRevival());   // 啟動協程
     }
     #endregion
 }
