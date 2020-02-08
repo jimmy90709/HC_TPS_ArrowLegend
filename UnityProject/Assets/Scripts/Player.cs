@@ -12,10 +12,11 @@ public class Player : MonoBehaviour
     private Transform target;
     private Rigidbody rig;
     private Animator ani;
-    #endregion
-
     private LevelManager levelManager;  // 關卡管理器
     private HpBarControl hpControl;     // 血條控制器
+    #endregion
+
+    public float timer;
 
     #region 事件
     private void Start()
@@ -78,10 +79,21 @@ public class Player : MonoBehaviour
         // 垂直 1、-1
         // 動畫控制器.設定布林值(參數名稱，布林值)
         ani.SetBool("跑步開關", h != 0 || v != 0);
+
+        if (h == 0 && v == 0) Attack();     // 如果 水平與垂直 皆為 0 就 攻擊
     }
 
     private void Attack()
     {
+        if (timer < data.cd)            // 如果 計時器 < 資料.冷卻
+        {
+            timer += Time.deltaTime;    // 累加時間
+        }
+        else
+        {
+            timer = 0;                  // 歸零
+            ani.SetTrigger("攻擊觸發"); // 播放攻擊動畫 SetTrigger("參數名稱")
+        }
         ani.SetTrigger("攻擊觸發");     // 播放攻擊動畫 SetTrigger("參數名稱")
     }
 
@@ -89,7 +101,7 @@ public class Player : MonoBehaviour
     {
         data.hp -= damage;                            // 血量 扣除 傷害值
         data.hp = Mathf.Clamp(data.hp, 0, 10000);     // 血量 夾在 0 - 10000
-        hpControl.UpdataHpBar(data.hpMax, data.hp);
+        hpControl.UpdataHpBar(data.hpMax, data.hp);   // 血量控制系統.更新血調(目前血量,最大血量)
         if (data.hp == 0) Dead();                     // 如果 血量 為 0 呼叫死亡方式
         StartCoroutine(hpControl.ShowDamage(damage)); // 血量控制氣.顯示傷害值
     }
@@ -101,5 +113,14 @@ public class Player : MonoBehaviour
         this.enabled = false;                              // this 此類別 - enabled 是否啟動
         StartCoroutine(levelManager.CountDownRevival());   // 啟動協程
     }
+
+    public void Revival()
+    {
+        data.hp = data.hpMax;                         // 血量恢復最大值
+        hpControl.UpdataHpBar(data.hpMax, data.hp);   // 更新血條
+        ani.SetBool("死亡動畫", false);               // 動畫設為沒有死亡
+        this.enabled = true;                          // 此腳本.啟動 = 開啟
+        levelManager.CloseRevival();                  // 關卡管理器.關閉復活畫面
+    } 
     #endregion
 }
